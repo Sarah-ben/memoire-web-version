@@ -13,6 +13,7 @@ import 'package:memoire/shared/network/cache_helper.dart';
 import 'package:memoire/widgets/add_material/cubit/material_cubit.dart';
 import 'package:memoire/widgets/add_material/cubit/material_states.dart';
 
+import '../../shared/components/footer/footer_min.dart';
 import '../../shared/components/footer/footer_mx.dart';
 import '../../shared/cubit/app_cubit.dart';
 import '../../shared/styles/icons.dart';
@@ -97,7 +98,7 @@ class _MaterialScreenState extends State<MaterialScreen> {
                                   children: [
                                     customText(context, text: 'Materials',upperCase: false),
                                     verticalSizedBox(20.0),
-                                   isAdmin? DataTable2(
+                                    MaterialCubit.get(context).materials.length >0?   isAdmin? DataTable2(
                                         border:TableBorder.all(color: Colors.grey.withOpacity(.4)) ,
                                         headingRowColor:MaterialStateProperty.all(Colors.grey.withOpacity(.5)) ,
                                         //dataRowColor:MaterialStateProperty.all(Colors.green) ,
@@ -203,7 +204,10 @@ class _MaterialScreenState extends State<MaterialScreen> {
                                            },
                                            child: customText(context, text: 'reserve',color: Colors.yellow,upperCase: false),
                                          ),), //  DataCell(Text(''))
-                                       ])).toList())
+                                       ])).toList()):
+                                   Padding(padding: EdgeInsets.all(300),
+                                     child: customText(context, text: 'no material yet',color: Colors.grey),
+                                   ),
                                   ],
                                 ),
                               ),
@@ -217,7 +221,7 @@ class _MaterialScreenState extends State<MaterialScreen> {
                       const SizedBox(
                         height: 70,
                       ),
-                      const footer()
+                      getWidth(context)>=950 ?footer():FooterMin()
                     ],
                   ),
                   childCount: 1,

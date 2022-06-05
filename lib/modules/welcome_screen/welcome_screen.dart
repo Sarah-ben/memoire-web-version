@@ -7,6 +7,7 @@ import 'package:memoire/shared/components/footer/footer_mx.dart';
 import 'package:memoire/shared/cubit/app_states.dart';
 import 'package:readmore/readmore.dart';
 import '../../shared/components/constants.dart';
+import '../../shared/components/footer/footer_min.dart';
 import '../../shared/cubit/app_cubit.dart';
 import '../../shared/styles/icons.dart';
 
@@ -457,7 +458,7 @@ class _WelcomePageState extends State<WelcomePage> {
                     const SizedBox(
                       height: 70,
                     ),
-                    const footer()
+                    getWidth(context)>=950 ?footer():FooterMin()
                   ],
                 ),
                 childCount: 1,

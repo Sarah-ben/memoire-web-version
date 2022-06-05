@@ -19,6 +19,7 @@ import 'package:memoire/modules/reservations/classroom_reservation_screen.dart';
 import 'package:memoire/modules/teachers_screen/teachers_screen.dart';
 import 'package:memoire/widgets/add_clasrrom/add_classroom.dart';
 import 'package:memoire/widgets/add_material/cubit/material_cubit.dart';
+import 'package:memoire/widgets/search/search_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../models/reservation_model/classroom_reservation,_model.dart';
 import '../../modules/request_admin_account/request_admin_account.dart';
@@ -47,6 +48,7 @@ Widget customTextButton(
         color,
         var onPressed}) =>
     TextButton(
+
       onHover: onHover,
       onPressed: onPressed,
       child: AnimatedContainer(
@@ -613,7 +615,7 @@ Widget leftMenu(context) => Container(
               padding:const EdgeInsets.only(left: 10, top: 15, bottom: 15),
               width: 300,
               child: Text(
-                'Teachers',
+                'Professors',
                 style: textStyle(context),
               ),
             ),
@@ -719,16 +721,31 @@ Widget headerMainScreen(context, onChange,{ controller}) => SliverAppBar(
               : const EdgeInsets.only(top: 8.0, right: 20),
           child: Row(
             children: [
+              customText(context, text: '+213 (0) 31.78.31.73',color: Colors.white),
+              const SizedBox(
+                width: 30,
+              ),
+               InkWell(
+                 onTap:()=>sendEmail(' fac.ntic@univ-constantine2.dz', ''),
+                 child: Container(
+                    padding: const EdgeInsets.all(5),
+                    alignment: AlignmentDirectional.center,
+                    width: 30,
+                    height: 30,
+                    color: Colors.green,
+                    child: Image.asset(
+                      'assets/images/email.png',
+                    )),
+               ),
 
-              socialMedia('assets/images/email.png', ()=>print('instagram link')),
              const SizedBox(
                 width: 10,
               ),
-              socialMedia('assets/images/linkedin.png', ()=>print('instagram link')),
+              socialMedia('assets/images/twitter.png', ('https://twitter.com/fac_ntic_UC2')),
              const SizedBox(
                 width: 10,
               ),
-              socialMedia('assets/images/facebook.png', ()=>print('instagram link')),
+              socialMedia('assets/images/facebook.png', ('https://web.facebook.com/faculteNTICUC2')),
               const SizedBox(
                 width: 10,
               ),
@@ -786,14 +803,12 @@ Widget headerMainScreen(context, onChange,{ controller}) => SliverAppBar(
            child:CustomPopupMenu(
              arrowSize: 30,
              arrowColor: Colors.transparent,
-             child:const CircleAvatar(
-                 backgroundColor: Colors.grey,
-              ),
+             child:Center(child: customText(context, text: 'ME'),),
              menuBuilder: () => ClipRRect(
                borderRadius:
                BorderRadius.circular(5),
                child: Container(
-                 color: Colors.grey,
+                 color: Colors.white,
                  child: IntrinsicWidth(
                    child: Column(
                      crossAxisAlignment:
@@ -804,9 +819,9 @@ Widget headerMainScreen(context, onChange,{ controller}) => SliverAppBar(
                         padding: const EdgeInsets.only(left: 10,right: 10,top:10),
                         child:  Row(
                             children: [
-                              customText(context, text: CacheHelper.getData(key: 'first_name'),upperCase: false),
+                              customText(context, text: CacheHelper.getData(key: 'first_name'),upperCase: false,color: Colors.black),
                               const SizedBox(width: 5,),
-                              customText(context, text: CacheHelper.getData(key: 'last_name')),
+                              customText(context, text: CacheHelper.getData(key: 'last_name'),color: Colors.black),
                               const SizedBox(width: 15,),
                               InkWell(
                                 onTap: (){
@@ -827,7 +842,6 @@ Widget headerMainScreen(context, onChange,{ controller}) => SliverAppBar(
                                   _placeController =
                                   TextEditingController(
                                       text: CacheHelper.getData(key: 'place'));
-
                                   updateUserDialog(context,
                                       firstName:
                                       _firstNameController,
@@ -858,19 +872,21 @@ Widget headerMainScreen(context, onChange,{ controller}) => SliverAppBar(
                                         //update
                                       });
                                 },
-                                  child: const Icon(Icons.edit,color: Colors.yellow,))
+                                  child: const Icon(Icons.edit,color: Colors.green,))
                             ],
                           ),
 
                       ),
                         Padding(
                          padding:const  EdgeInsets.only(left: 10,right: 10,top:10),
-                         child:customText(context, text: CacheHelper.getData(key: 'grade'),upperCase: false),
+                         child:customText(context, text: CacheHelper.getData(key: 'grade'),upperCase: false,color: Colors.black),
                        ),
                        Padding(
                          padding:const  EdgeInsets.only(left: 10,right: 10,top:10),
-                         child:customText(context, text: CacheHelper.getData(key: 'place'),upperCase: false),
+                         child:customText(context, text: CacheHelper.getData(key: 'place'),upperCase: false,color: Colors.black),
                        ),
+                       const SizedBox(height: 10,),
+                       Divider(color: Colors.green,),
                        customTextButton(
                          onPressed: () {
                            showDialog(
@@ -910,18 +926,32 @@ Widget headerMainScreen(context, onChange,{ controller}) => SliverAppBar(
                                  );
                                });
                          },
-                         color: dark(context)
-                             ? Colors.white
-                             : Colors.black,
-                        /* onHover: logoutHover,/*(hover) {
-                        setState(() {
-                          isLogOut = hover;
-                        });*/
-                      }*/
+                         color:  Colors.green
+                             ,
+
                          text: 'Log out',
+
                          isHover: isLogOut,
                        ),
-                       Divider(),
+                       Divider(color: Colors.red,),
+                       customTextButton(
+                         onPressed: () {
+                           deleteConfirmation(context,
+                               text1: 'your account?',
+                               function: () {
+                                 LoginCubit.get(context)
+                                     .deleteAccount(
+                                     CacheHelper.getData(key: 'ID'), context);
+                               });
+                         },
+                         color:  Colors.red
+                         ,
+                         text: 'Delete account',
+
+                         isHover: isLogOut,
+                       ),
+                       const SizedBox(height: 10,),
+
                      ],
                    ),
                  ),
@@ -983,9 +1013,9 @@ Widget headerMainScreenMinSize(context, onchange) => SliverAppBar(
               alignment: AlignmentDirectional.center,
               width: 40,
               height: 20,
-              child: const Icon(
+              child:  Icon(
                 IconBroken.Search,
-                color: Colors.white,
+                color:dark(context)? Colors.white:Colors.black,
               )),
         ),
         Padding(
@@ -1331,6 +1361,7 @@ registerDialog(context, state) => showDialog(
                                   height: 10.0,
                                 ),
                                 defaultFormField(context,
+                                    obsText: true,
                                     controller: passwordController,
                                     inputType: TextInputType.emailAddress,
                                     label: 'Password'),
@@ -1767,6 +1798,7 @@ addClassDialog(context) => showDialog(
                                     width: 300.0,
                                     child: defaultButton(
                                         function: () {
+                                          AddCubit.get(context).searchData('Item8');
                                           if (formKey.currentState!
                                               .validate()) {
                                             AddCubit.get(context).addClass(
@@ -2000,16 +2032,7 @@ loginDialog(context, state) => showDialog(
                                 const SizedBox(
                                   height: 20.0,
                                 ),
-                                TextButton(
-                                    onPressed: () {},
-                                    child: const Text(
-                                      'Forgot password?',
-                                      style: TextStyle(color: Colors.green,decoration: TextDecoration.underline),
-                                    ),),
 
-                                const SizedBox(
-                                  height: 15.0,
-                                ),
                                 Divider(
                                   indent: 20.0,
                                   endIndent: 20.0,
@@ -2583,7 +2606,8 @@ updateMaterialReservation(context, int? id,int? id_user, TextEditingController r
                         defaultButton(
                             function:(){
                      MaterialReservationCubit.get(context).updateReservationForAdmin(id: id, time: reservationTime.text, date: reservationDate.text, goal: reservationGoal.text, id_user: id_user);
-                             // MaterialReservationCubit.get(context).updateReservation(id: id,context: context,time: reservationTime.text, date: reservationDate.text, goal: reservationGoal.text);
+                     navigateTo(context, MaterialReservationScreen());
+                              // MaterialReservationCubit.get(context).updateReservation(id: id,context: context,time: reservationTime.text, date: reservationDate.text, goal: reservationGoal.text);
                             },
                             text: 'Update'),
                       ],
@@ -2627,12 +2651,10 @@ materialReservation(context, int? id_user,int? id_material, TextEditingControlle
                           verticalSizedBox(10.0),
                           customUpdateItem(context, controller: reservationTime,onPressed: (){
                             showTimePicker(
-
                               context: context,
                               initialTime: TimeOfDay.now(),
                             ).then((value) =>
                             reservationTime.text = value!.format(context).toString());
-
                           }),
                           verticalSizedBox(10.0),
                           customUpdateItem(context, controller: reservationDate,onPressed: (){
@@ -2731,8 +2753,7 @@ Widget rightMenu(context,{emailHover,logoutHover,controller, children, child, no
     child: Column(
        crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-SizedBox(height: 30,),
-
+const SizedBox(height: 30,),
         SizedBox(
           //width:462,
           height: 200,
@@ -2740,14 +2761,13 @@ SizedBox(height: 30,),
             crossAxisAlignment: CrossAxisAlignment.end,
             // mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-
-              Container(
+             Container(
           clipBehavior: Clip.antiAliasWithSaveLayer,
                 decoration: BoxDecoration(
                   color: Colors.green.withOpacity(.7),
                  borderRadius: BorderRadius.circular(20)
                 ),
-                width: 467,
+                width: 400,
                 height: 50,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -2771,68 +2791,8 @@ SizedBox(height: 30,),
                       thickness: 2,
                     ),
                    const ClassWidget(),
-                    VerticalDivider(
-                      color: dark(context)
-                          ? Colors.white
-                          : Colors.black,
-                      indent: 15,
-                      endIndent: 15,
-                      thickness: 2,
-                    ),
-                    customText(context,
-                        text: CacheHelper.getData(
-                            key: 'role')),
+
 SizedBox(width: 20,)
-                   /* customTextButton(
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (_) {
-                              return AlertDialog(
-                                title:const Text(
-                                    'Are you sure you want to log out?'),
-                                actions: [
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                          child: defaultButton(
-                                              function: () {
-                                                Navigator.pop(context);
-                                              },
-                                              text: 'no',
-                                              background: Colors.grey)),
-                                      const SizedBox(
-                                        width: 15,
-                                      ),
-                                      Expanded(
-                                          child: defaultButton(
-                                              background: Colors.red,
-                                              text: 'yes',
-                                              function: (){
-                                                CacheHelper.clearData();
-                                                print(CacheHelper.getData(
-                                                    key: 'token'));
-                                                //CacheHelper.getData(key: 'ID')
-                                                navigateAndReplace(
-                                                    context, const WelcomePage());
-                                              })),
-                                    ],
-                                  )
-                                ],
-                              );
-                            });
-                      },
-                      color: dark(context)
-                          ? Colors.white
-                          : Colors.black,
-                      onHover: logoutHover,/*(hover) {
-                        setState(() {
-                          isLogOut = hover;
-                        });
-                      }*/
-                      text: 'Log out',
-                      isHover: isLogOut,
-                    ),*/
                   ],
                 ),
               ),
@@ -2848,45 +2808,10 @@ SizedBox(width: 20,)
                           border: Border.all(
                               color: Colors.grey)),
                       child: ListTile(
-                        trailing:   Icon(IconBroken.Search,color: dark(context)?Colors.white:Colors.black,),
-                        /*CustomPopupMenu(
-                          arrowSize: 30,
-                          arrowColor: Colors.transparent,
-                          child: Icon(Icons.list,
-                              color: dark(context)
-                                  ? Colors.white
-                                  : Colors.black),
-                          menuBuilder: () => ClipRRect(
-                            borderRadius:
-                            BorderRadius.circular(5),
-                            child: Container(
-                              color: Colors.grey.shade50,
-                              child: IntrinsicWidth(
-                                child: Column(
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment
-                                      .stretch,
-                                  children:[
-                                  const ClassWidget(),
-                                    customDivider(
-                                        color: Colors.grey
-                                            .withOpacity(
-                                            .3)),
-                                    const MaterialWidget(),
-                                    customDivider(
-                                        color: Colors.grey
-                                            .withOpacity(
-                                            .3)),
-                                    const RegisterWidget(),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          pressType: PressType.singleClick,
-                          verticalMargin: -10,
-                          controller: controller,
-                        ),*/
+                        trailing:  InkWell(
+                          onTap: ()=>navigateTo(context,  SearchWidget(),),
+                          child: Icon(IconBroken.Search,color: dark(context)?Colors.white:Colors.black,),
+                        ),
                         leading: CustomPopupMenu(
                           arrowSize: 30,
                           arrowColor: Colors.transparent,
@@ -2923,42 +2848,6 @@ SizedBox(width: 20,)
                           verticalMargin: -10,
                           controller: notificationController,
                         ),
-                        /*SizedBox(
-                          width: 60,
-                          height:60,
-                          child: InkWell(
-                            onTap: (){
-                              showDialog(
-                                  barrierColor: dark(context) ? Colors.white24 : Colors.black26,
-                                  context: context,
-                                  builder: (_) => AlertDialog(
-                                      backgroundColor: Colors.grey.withOpacity(.8),
-                                      shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                                      content: StatefulBuilder(
-                                        builder: (BuildContext context, StateSetter setState) {
-                                          return Builder(
-                                            builder: (context) {
-                                              return SizedBox(
-                                                height: 624.0,
-                                                width: 350.0,
-                                                child: child,
-                                              );
-                                            },
-                                          );
-                                        },
-                                      )));
-                            },
-                            child: Row(
-                              children: [
-                                const Icon(IconBroken.Notification,color: Colors.green,),
-                                Align(
-                                    alignment: AlignmentDirectional.topEnd,
-                                    child: customText(context, text: '${ReservationCubit.get(context).particular.length}')),
-                              ],
-                            ),
-                          ),
-                        ),*/
                       ),
                     ),
                   ],
@@ -2966,7 +2855,7 @@ SizedBox(width: 20,)
               ),
             ],
           ),
-        ),
+        )
       ],
     ),
   ),
@@ -2974,9 +2863,9 @@ SizedBox(width: 20,)
 Widget rightMenu2(context,{emailHover,logoutHover,controller})=> Padding(
   padding:getWidth(context) > 900
       ? const EdgeInsets.symmetric(
-      horizontal: 80, vertical: 10)
+      horizontal: 80, vertical: 40)
       : const EdgeInsets.symmetric(
-      horizontal: 20, vertical: 10),
+      horizontal: 20, vertical: 40),
   child: Container(
     //  color: Colors.red,
     color: dark(context) ? Colors.black : Colors.white,
@@ -2985,13 +2874,6 @@ Widget rightMenu2(context,{emailHover,logoutHover,controller})=> Padding(
     child: Row(
       // mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        getWidth(context) > 759
-            ? const Image(
-            image: AssetImage(
-                'assets/images/univlogo.png'))
-            :const SizedBox(
-          width: 0,
-        ),
         const Spacer(),
         SizedBox(
           //width:462,
@@ -3001,99 +2883,7 @@ Widget rightMenu2(context,{emailHover,logoutHover,controller})=> Padding(
             // mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               SizedBox(
-                width: 462,
-                height: 80,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    customTextButton(
-                        onPressed: () {},
-                        color: dark(context)
-                            ? Colors.white
-                            : Colors.black,
-                        onHover:emailHover/* (hover) {
-                          setState(() {
-                            isEmail = hover;
-                          });
-                        }*/,
-                        text:
-                        '${CacheHelper.getData(key: 'email')}',
-                        isHover: isEmail),
-                    VerticalDivider(
-                      color: dark(context)
-                          ? Colors.white
-                          : Colors.black,
-                      indent: 22,
-                      endIndent: 22,
-                      thickness: 2,
-                    ),
-                    customText(context,
-                        text: CacheHelper.getData(
-                            key: 'role')),
-                    VerticalDivider(
-                      color: dark(context)
-                          ? Colors.white
-                          : Colors.black,
-                      indent: 22,
-                      endIndent: 22,
-                      thickness: 2,
-                    ),
-                    customTextButton(
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (_) {
-                              return AlertDialog(
-                                title:const Text(
-                                    'Are you sure you want to log out?'),
-                                actions: [
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                          child: defaultButton(
-                                              function: () {
-                                                Navigator.pop(context);
-                                              },
-                                              text: 'no',
-                                              background: Colors.grey)),
-                                      const SizedBox(
-                                        width: 15,
-                                      ),
-                                      Expanded(
-                                          child: defaultButton(
-                                              background: Colors.red,
-                                              text: 'yes',
-                                              function: (){
-                                                CacheHelper.clearData();
-                                                print(CacheHelper.getData(
-                                                    key: 'token'));
-                                                //CacheHelper.getData(key: 'ID')
-                                                navigateAndReplace(
-                                                    context, const WelcomePage());
-                                              })),
-                                    ],
-                                  )
-                                ],
-                              );
-                            });
-
-                      },
-                      color: dark(context)
-                          ? Colors.white
-                          : Colors.black,
-                      onHover: logoutHover,/*(hover) {
-                        setState(() {
-                          isLogOut = hover;
-                        });
-                      }*/
-                      text: 'Log out',
-                      isHover: isLogOut,
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                width: 462,
+                width: 80,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -3102,11 +2892,13 @@ Widget rightMenu2(context,{emailHover,logoutHover,controller})=> Padding(
                       decoration: BoxDecoration(
                           border: Border.all(
                               color: Colors.grey)),
-                      child:const ListTile(
-                        leading: Icon(
-                          IconBroken.Search,
-                          color: Colors.lightGreen,
+                      child: ListTile(
+                        trailing:  InkWell(
+                          onTap: ()=>navigateTo(context,  SearchWidget(),),
+                          child: Icon(IconBroken.Search,color: dark(context)?Colors.white:Colors.black,),
                         ),
+
+
                       ),
                     ),
                   ],
@@ -3153,7 +2945,7 @@ Widget buildNotificationItem(context,ReservationData model) {
   );
 }
 
-void _launchUrl(url) async {
+void launchUrl(url) async {
   var urllaunchable =
   await canLaunch(url); //canLaunch is from url_launcher package
   if (urllaunchable) {
@@ -3164,7 +2956,7 @@ void _launchUrl(url) async {
 }
 
 Widget socialMedia(String asset,url)=>InkWell(
-onTap: (){_launchUrl(url);},
+onTap: (){launchUrl(url);},
 child: Container(
 padding: const EdgeInsets.all(5),
 alignment: AlignmentDirectional.center,

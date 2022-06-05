@@ -17,6 +17,7 @@ class UserData{
   String? place;
   String? email;
   String? role;
+  String? password;
 
   UserData.fromJson(Map<String,dynamic>json){
 
@@ -27,6 +28,7 @@ class UserData{
     place=json['place'];
     email=json['email'];
     role=json['role'];
+    password=json['password'];
 
   }
 }

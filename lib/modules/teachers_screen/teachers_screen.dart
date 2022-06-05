@@ -9,6 +9,7 @@ import 'package:memoire/shared/network/cache_helper.dart';
 import 'package:memoire/widgets/register/register_cubit/register_cubit.dart';
 import 'package:memoire/widgets/register/register_cubit/register_states.dart';
 import 'package:memoire/widgets/register/register_widget.dart';
+import '../../shared/components/footer/footer_min.dart';
 import '../../shared/components/footer/footer_mx.dart';
 import '../../shared/cubit/app_cubit.dart';
 import '../../shared/styles/icons.dart';
@@ -91,10 +92,11 @@ class _TeachersScreenState extends State<TeachersScreen> {
                                       left: 70.0, top: 40.0)
                                       : const EdgeInsets.only(left: 5.0, top: 70.0),
                                   child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      customText(context, text: 'Teachers ',upperCase: false),
+                                      customText(context, text: 'Professors ',upperCase: false),
                                       verticalSizedBox(20.0),
-                                      DataTable2(
+                                      LoginCubit.get(context).teachers.length >0? DataTable2(
                                           showCheckboxColumn: true,
                                           border: TableBorder.all(
                                               color: Colors.grey.withOpacity(.4)),
@@ -198,7 +200,8 @@ class _TeachersScreenState extends State<TeachersScreen> {
                                                 fontSize: 12.0,
                                                 upperCase: false)),
 
-                                            DataCell(Row(
+                                            DataCell(
+                                               getWidth(context)>=562? Row(
                                               children: [
                                                 const Icon(
                                                   IconBroken.Edit,
@@ -263,8 +266,65 @@ class _TeachersScreenState extends State<TeachersScreen> {
                                                       upperCase: false),
                                                 )
                                               ],
-                                            )),
-                                            DataCell(Row(
+                                            ):InkWell(
+                                                 onTap: () {
+                                                   TextEditingController
+                                                   _firstNameController =
+                                                   TextEditingController(
+                                                       text: data
+                                                           .first_name);
+                                                   TextEditingController
+                                                   _lastNameController =
+                                                   TextEditingController(
+                                                       text:
+                                                       data.last_name);
+                                                   TextEditingController
+                                                   _gradeController =
+                                                   TextEditingController(
+                                                       text: data.grade);
+                                                   TextEditingController
+                                                   _placeController =
+                                                   TextEditingController(
+                                                       text: data.place);
+                                                   updateUserDialog(context,
+                                                       firstName:
+                                                       _firstNameController,
+                                                       lastName:
+                                                       _lastNameController,
+                                                       grade: _gradeController,
+                                                       place: _placeController,
+                                                       function: () {
+                                                         if (formKey.currentState!
+                                                             .validate()) {
+                                                           LoginCubit.get(context).userUpdate(
+                                                               id: data.id,
+                                                               first_name:
+                                                               _firstNameController
+                                                                   .text,
+                                                               last_name:
+                                                               _lastNameController
+                                                                   .text,
+                                                               grade:
+                                                               _gradeController
+                                                                   .text,
+                                                               place:
+                                                               _placeController
+                                                                   .text,
+                                                               role: _role.name, context: context);
+                                                           LoginCubit.get(context).getUsers();
+                                                         }
+                                                         //update
+                                                       });
+                                                   //print('tapped');
+                                                   //MaterialCubit.get(context).deleteMaterial(data.id, context);
+                                                 },
+                                                 child: customText(context,
+                                                     text: 'Edit',
+                                                     color: Colors.blueGrey,
+                                                     upperCase: false),
+                                               )),
+                                            DataCell(
+                                               getWidth(context)>=562? Row(
                                               children: [
                                                 const Icon(IconBroken.Delete,
                                                     color: Colors.red,
@@ -288,12 +348,32 @@ class _TeachersScreenState extends State<TeachersScreen> {
                                                       upperCase: false),
                                                 ),
                                               ],
-                                            )),
+                                            ): InkWell(
+                                                 onTap: () {
+
+                                                   deleteConfirmation(context,
+                                                       text1: data.first_name!,
+                                                       text2: data.last_name,
+                                                       function: () {
+                                                         LoginCubit.get(context)
+                                                             .deleteUser(
+                                                             data.id, context);
+                                                         LoginCubit.get(context).getUsers();
+                                                       });
+                                                 },
+                                                 child: customText(context,
+                                                     text: 'Delete',
+                                                     color: Colors.blueGrey,
+                                                     upperCase: false),
+                                               ),),
 
 
                                             //  DataCell(Text(''))
                                           ]))
-                                              .toList()),
+                                              .toList()):
+                                    Padding(padding: EdgeInsets.all(300),
+                                child: customText(context, text: 'no teachers yet',color: Colors.grey),
+                              ),
                                     ],
                                   ),
                                 ),
@@ -308,7 +388,7 @@ class _TeachersScreenState extends State<TeachersScreen> {
                       const SizedBox(
                         height: 70,
                       ),
-                      const footer()
+                      getWidth(context)>=950 ?footer():FooterMin()
                     ],
                   ),
                   childCount: 1,

@@ -99,6 +99,7 @@ class _ClassWidgetState extends State<ClassWidget> {
         return FlatButton(
 
           onPressed: () {
+
             addClassDialog(context);
           },
           hoverColor: Colors.green,

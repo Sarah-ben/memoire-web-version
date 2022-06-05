@@ -42,6 +42,9 @@ class _footerState extends State<footer> {
                             children: [
                               const Icon(Icons.link,color: Colors.white,),
                               customTextButton(
+                                onPressed: (){
+                                  launchUrl('https://elearning.univ-constantine2.dz/');
+                                },
                                   onHover: (hover) {
                                     setState(() => isElearning = hover);
                                   },
@@ -72,6 +75,9 @@ class _footerState extends State<footer> {
                     const Divider(thickness: 2,color: Colors.white,),
                     verticalSizedBox(10.0),
                     customTextButton(
+                      onPressed: (){
+                        sendEmail('djihane.laadjal@univ-constantine2.dz', 'Contact Developer');
+                      },
                         onHover: (hover) {
                           setState(() {
                             isContactus = hover;
@@ -79,13 +85,11 @@ class _footerState extends State<footer> {
                         },
                         text: 'Contact Us',
                         isHover: isContactus),
+
                     customTextButton(
-                        onHover: (hover) {
-                          setState(() => isAccessible = hover);
-                        },
-                        text: 'Accessibility',
-                        isHover: isAccessible),
-                    customTextButton(
+                      onPressed: (){
+                        launchUrl('https://www.freeprivacypolicy.com/live/ff2de365-f95c-4f05-8dc4-b7e18f2b6c71');
+                      },
                         onHover: (hover) {
                           setState(() => isPrivacy = hover);
                         },
@@ -96,7 +100,7 @@ class _footerState extends State<footer> {
               ),
               const SizedBox(width: 50.0,),
               SizedBox(
-                width: 120,
+                width: 140,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   // mainAxisAlignment:MainAxisAlignment.center,
@@ -112,6 +116,9 @@ class _footerState extends State<footer> {
                     const Divider(thickness: 2,color: Colors.white,),
                     verticalSizedBox(10.0),
                     customTextButton(
+                        onPressed: (){
+                          launchUrl('https://web.facebook.com/faculteNTICUC2');
+                        },
                         onHover: (Hover) {
                           setState(() {
                             isFacebook = Hover;
@@ -120,6 +127,9 @@ class _footerState extends State<footer> {
                         text: 'Facebook',
                         isHover: isFacebook),
                     customTextButton(
+                      onPressed: (){
+                        launchUrl('https://twitter.com/fac_ntic_UC2');
+                      },
                         onHover: (Hover) {
                           setState(() {
                             isTwitter = Hover;
@@ -127,30 +137,27 @@ class _footerState extends State<footer> {
                         },
                         text: 'Twitter',
                         isHover: isTwitter),
-                    customTextButton(
-                        onHover: (Hover) {
-                          setState(() {
-                            isInstagram = Hover;
-                          });
-                        },
-                        text: 'Instagram',
-                        isHover: isInstagram),
-                    customTextButton(
-                        onHover: (Hover) {
-                          setState(() {
-                            isYoutube = Hover;
-                          });
-                        },
-                        text: 'Youtube',
-                        isHover: isYoutube),
+
+
                     customTextButton(
                         onHover: (Hover) {
                           setState(() {
                             isLnkedIn = Hover;
                           });
                         },
-                        text: 'LinkedIn',
+                        text: '031783173',
                         isHover: isLnkedIn),
+                    customTextButton(
+                      onPressed: (){
+                        sendEmail('fac.ntic@univ-constantine2.dz', '');
+                      },
+                        onHover: (Hover) {
+                          setState(() {
+                            isEmail = Hover;
+                          });
+                        },
+                        text: 'Email',
+                        isHover: isEmail),
                   ],
                 ),
               ),

@@ -12,6 +12,7 @@ import 'package:memoire/shared/network/cache_helper.dart';
 import 'package:memoire/widgets/add_reservation/classroom_cubit/reservation_list.dart';
 import 'package:memoire/widgets/register/register_widget.dart';
 
+import '../../shared/components/footer/footer_min.dart';
 import '../../shared/components/footer/footer_mx.dart';
 import '../../shared/cubit/app_cubit.dart';
 import '../../shared/styles/icons.dart';
@@ -70,19 +71,30 @@ class _HomeScreenState extends State<HomeScreen> {
                       },controller: _controller,
                       ),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 80),
+                        padding: getWidth(context) >= 1025
+                            ? const EdgeInsets.symmetric(horizontal: 80)
+                            : const EdgeInsets.symmetric(horizontal: 20),
                         color: dark(context) ? Colors.black : Colors.white,
                         height: 700,
                         width: double.infinity,
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            leftMenu(context),
+                            getWidth(context) >= 900
+                                ? leftMenu(context)
+                                : const SizedBox(),
                             Expanded(
                               child: SingleChildScrollView(
                                 physics: BouncingScrollPhysics(),
                                 child: Padding(
-                                  padding: LoginCubit.get(context).admins.length>=5? const EdgeInsets.only(left: 40.0,top: 40.0):const EdgeInsets.only(left: 70.0,top: 40.0),
+                                  padding: getWidth(context) > 900
+                                      ? LoginCubit.get(context).admins.length >= 5
+                                      ? const EdgeInsets.only(
+                                      left: 40.0, top: 70.0)
+                                      : const EdgeInsets.only(
+                                      left: 70.0, top: 40.0)
+                                      : const EdgeInsets.only(left: 5.0, top: 70.0),
+
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
@@ -130,7 +142,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                             DataCell(customText(context, text: data.grade!,fontSize: 12.0,upperCase: false)),
                                             DataCell(customText(context, text: data.place!,fontSize: 12.0,upperCase: false)),
                                             //  DataCell(Text(''))
-                                          ])).toList()),
+                                          ])).toList())
+
                                     ],
                                   ),
                                 ),
@@ -146,7 +159,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       const SizedBox(
                         height: 70,
                       ),
-                      const footer()
+                      getWidth(context)>=950 ?footer():FooterMin()
                     ],
                   ),
                   childCount: 1,

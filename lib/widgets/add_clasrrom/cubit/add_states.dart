@@ -28,3 +28,7 @@ class LoginUpdateErrorState extends AddStates{
   LoginUpdateErrorState(this.error);
 }
 
+class SearchState extends AddStates{}
+class SearchLoadingState extends AddStates{}
+class SearchErrorState extends AddStates{}
+

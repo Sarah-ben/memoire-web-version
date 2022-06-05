@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:memoire/models/reservation_model/materal_reservation.dart';
+import 'package:memoire/modules/material_screen/material_screen.dart';
+import 'package:memoire/modules/reservations/material_reservation_screen.dart';
+import 'package:memoire/widgets/add_material/add_material.dart';
 import '../../../shared/components/components.dart';
 import '../../../shared/network/cache_helper.dart';
 import '../../../shared/network/dio_helper.dart';
@@ -33,7 +36,11 @@ class MaterialReservationCubit extends Cubit<MaterialReservationStates>{
       print(materialReservationModel.data!.time);
       print(value.data);
       print('salle added');
-      flutterToast(msg: 'Item ${materialReservationModel.data!.id_material} added to your reservations.', state: toastStates.error);
+      flutterToast(msg: 'Item ${materialReservationModel.data!.id_material} added to your reservations.', state: toastStates.error).then((value) {
+        navigateTo(context, MaterialScreen());
+        getAllReservation(context);
+        getReservation(context);
+      });
       emit(ReservationADDSuccessState());
     }).catchError((onError){
       flutterToast(msg: 'Something went wrong ,try again!', state: toastStates.error);
@@ -59,33 +66,7 @@ class MaterialReservationCubit extends Cubit<MaterialReservationStates>{
         print(materialReservations.length);
       });
       // this one worked fine
-      /*salles=value.data;
-      print(salles);
-      print(value.data[0]);
-       data=Data.fromJson(value.data[0]);
-      print(data.name);*/
-      // print(classModel);
-      //salles.add(value.data);
-      //print(value.data);
-      //  salles=value.data;
-      // print(salles.length);
-      //print(s);
-      /* s.forEach((element) {
-      // print(element['id']);
-      classModel=ClassModel.fromJson(element['id']);
-      print(ClassModel.fromJson(element['id']));
-     });*/
-      //print(salles.length);
-      //
-      //print(salles[0][1]['name']);
-      //print(salles[0][0]['name']);
-      // salles.forEach((element) {
-      // s=element.data();
-      //  print(element);
-      // classModel=ClassModel.fromJson(element);
-      // s.add(element.data());
-      // print('the sec list is $s');
-      // });
+
       emit(ReservationGetSuccessState());
     }).catchError((onError){
       print(onError);
@@ -157,7 +138,7 @@ class MaterialReservationCubit extends Cubit<MaterialReservationStates>{
       'time':time,
       'date':date,
       'goal':goal,
-      'id_classroom':'${reservationData.id_material}',
+      'id_material':'${reservationData.id_material}',
       'id_user':'${CacheHelper.getData(key: 'ID')}',
 
     }).then((value) {
@@ -193,8 +174,10 @@ class MaterialReservationCubit extends Cubit<MaterialReservationStates>{
       'id_user':id_user,
     }).then((value) {
       flutterToast(msg:'Reservation updated!', state: toastStates.success).then((value) {
-        Navigator.pop(context);
+
+        // Navigator.push(context, MaterialPageRoute(builder: (_)=>MaterialReservationScreen()));
         getReservation(context);
+
         getAllReservation(context);
       });
       print(value.data);
@@ -215,11 +198,17 @@ class MaterialReservationCubit extends Cubit<MaterialReservationStates>{
     getReservation(context);
     getAllReservation(context);
     getAllReservationsByID(context, id);
-    DioHelper.deleteData(url:'http://127.0.0.1:8000/api/reservation/$id' ).then((value){
-      getReservation(context);
+    DioHelper.deleteData(url:'http://127.0.0.1:8000/api/material_reservation/$id' ).then((value){
+      flutterToast(msg: 'material deleted!', state: toastStates.success).then((value) {
+        navigateTo(context, MaterialReservationScreen());
+        getReservation(context);
+        getAllReservation(context);
+
+      });
       print(value.data);// this shows that salle deleted that i put in my api
       emit(ReservationDeleteSuccessState());
     }).catchError((onError){
+      print(onError);
       emit(ReservationDeleteErrorState());
     });
   }

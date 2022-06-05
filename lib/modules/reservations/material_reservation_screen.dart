@@ -9,6 +9,7 @@ import 'package:memoire/shared/components/components.dart';
 import 'package:memoire/shared/components/constants.dart';
 import 'package:memoire/shared/network/cache_helper.dart';
 import 'package:memoire/widgets/add_reservation/material_reservation/material_reservation_states.dart';
+import '../../shared/components/footer/footer_min.dart';
 import '../../shared/components/footer/footer_mx.dart';
 import '../../shared/cubit/app_cubit.dart';
 import '../../shared/styles/icons.dart';
@@ -31,8 +32,10 @@ class _MaterialReservationScreenState extends State<MaterialReservationScreen> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    print(getWidth(context));
     return BlocConsumer<MaterialReservationCubit,MaterialReservationStates>(builder: (BuildContext context, state) {
       return Scaffold(
+
           backgroundColor: dark(context) ? Colors.black : Colors.white,
           body: CustomScrollView(
             slivers: [
@@ -81,12 +84,12 @@ class _MaterialReservationScreenState extends State<MaterialReservationScreen> {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            getWidth(context) >= 900
+                            getWidth(context) >= 1004
                                 ? leftMenu(context)
                                 : const SizedBox(),
                             Expanded(
                               child: SingleChildScrollView(
-                                physics: BouncingScrollPhysics(),
+                                physics:const BouncingScrollPhysics(),
                                 child: Padding(
                                   padding: getWidth(context) > 900
                                       ? MaterialReservationCubit.get(context).allReservations.length >= 5
@@ -101,7 +104,7 @@ class _MaterialReservationScreenState extends State<MaterialReservationScreen> {
                                     children: [
                                       customText(context, text: 'Material reservations',upperCase: false),
                                       verticalSizedBox(20.0),
-                                      CacheHelper.getData(key: 'role')=='admin'?
+                                    MaterialReservationCubit.get(context).allReservations.length >0? CacheHelper.getData(key: 'role')=='admin'?
                                       DataTable2(
                                           showCheckboxColumn: true,
                                           border: TableBorder.all(
@@ -183,7 +186,8 @@ class _MaterialReservationScreenState extends State<MaterialReservationScreen> {
                                                 text: '${data.id_user!}',
                                                 fontSize: 12.0,
                                                 upperCase: false)),
-                                            DataCell(Row(
+                                            DataCell(
+                                               getWidth(context)>=650? Row(
                                               children: [
                                                 const Icon(
                                                   IconBroken.Edit,
@@ -205,8 +209,22 @@ class _MaterialReservationScreenState extends State<MaterialReservationScreen> {
                                                       upperCase: false),
                                                 )
                                               ],
-                                            )),
-                                            DataCell(Row(
+                                            ): InkWell(
+                                                  onTap: () {
+                                                    var reservationTime=TextEditingController(text: data.time);
+                                                    var reservationDate=TextEditingController(text: data.date);
+                                                    var reservationGoal=TextEditingController(text: data.goal);
+                                                    updateMaterialReservation(context, data.id,data.id_user,reservationTime,reservationDate,reservationGoal);
+                                                    //print('tapped');
+                                                    //MaterialCubit.get(context).deleteMaterial(data.id, context);
+                                                  },
+                                                  child: customText(context,
+                                                      text: 'Edit',
+                                                      color: Colors.blueGrey,
+                                                      upperCase: false),
+                                                )),
+                                            DataCell(
+                                               getWidth(context)>=650? Row(
                                               children: [
                                                 const Icon(IconBroken.Delete,
                                                     color: Colors.red,
@@ -216,7 +234,7 @@ class _MaterialReservationScreenState extends State<MaterialReservationScreen> {
                                                     deleteConfirmation(context,
                                                         text1: 'ID : ${data.id!} ',
                                                         function: () {
-                                                          ReservationCubit.get(context)
+                                                          MaterialReservationCubit.get(context)
                                                               .deleteReservation(
                                                               data.id, context);
                                                         });
@@ -227,7 +245,21 @@ class _MaterialReservationScreenState extends State<MaterialReservationScreen> {
                                                       upperCase: false),
                                                 ),
                                               ],
-                                            )),
+                                            ):InkWell(
+                                                  onTap: () {
+                                                    deleteConfirmation(context,
+                                                        text1: 'ID : ${data.id!} ',
+                                                        function: () {
+                                                          MaterialReservationCubit.get(context)
+                                                              .deleteReservation(
+                                                              data.id, context);
+                                                        });
+                                                  },
+                                                  child: customText(context,
+                                                      text: 'Delete',
+                                                      color: Colors.blueGrey,
+                                                      upperCase: false),
+                                                ),),
                                             //  DataCell(Text(''))
                                           ]))
                                               .toList())
@@ -312,7 +344,8 @@ class _MaterialReservationScreenState extends State<MaterialReservationScreen> {
                                                 text: '${data.id_user!}',
                                                 fontSize: 12.0,
                                                 upperCase: false)),
-                                            DataCell(Row(
+                                            DataCell(
+                                               getWidth(context)>=650? Row(
                                               children: [
                                                 const Icon(
                                                   IconBroken.Edit,
@@ -334,8 +367,22 @@ class _MaterialReservationScreenState extends State<MaterialReservationScreen> {
                                                       upperCase: false),
                                                 )
                                               ],
-                                            )),
-                                            DataCell(Row(
+                                            ):InkWell(
+                                                  onTap: () {
+                                                    var reservationTime=TextEditingController(text: data.time);
+                                                    var reservationDate=TextEditingController(text: data.date);
+                                                    var reservationGoal=TextEditingController(text: data.goal);
+                                                    updateMaterialReservation(context, data.id,data.id_user,reservationTime,reservationDate,reservationGoal);
+                                                    //print('tapped');
+                                                    //MaterialCubit.get(context).deleteMaterial(data.id, context);
+                                                  },
+                                                  child: customText(context,
+                                                      text: 'Edit',
+                                                      color: Colors.blueGrey,
+                                                      upperCase: false),
+                                                )),
+                                            DataCell(
+                                              getWidth(context)>=650?  Row(
                                               children: [
                                                 const Icon(IconBroken.Delete,
                                                     color: Colors.red,
@@ -356,10 +403,27 @@ class _MaterialReservationScreenState extends State<MaterialReservationScreen> {
                                                       upperCase: false),
                                                 ),
                                               ],
-                                            )),
+                                            ):InkWell(
+                                                  onTap: () {
+                                                    deleteConfirmation(context,
+                                                        text1: 'ID : ${data.id!} ',
+                                                        function: () {
+                                                          ReservationCubit.get(context)
+                                                              .deleteReservation(
+                                                              data.id, context);
+                                                        });
+                                                  },
+                                                  child: customText(context,
+                                                      text: 'Delete',
+                                                      color: Colors.blueGrey,
+                                                      upperCase: false),
+                                                ),),
                                             //  DataCell(Text(''))
                                           ]))
-                                              .toList()) ,
+                                              .toList()) :
+                                       Padding(padding: EdgeInsets.all(300),
+                                child: customText(context, text: 'no reservation yet',color: Colors.grey),
+                              ),
                                     ],
                                   ),
                                 ),
@@ -374,7 +438,7 @@ class _MaterialReservationScreenState extends State<MaterialReservationScreen> {
                       const SizedBox(
                         height: 70,
                       ),
-                      const footer()
+                      getWidth(context)>=950 ?footer():FooterMin()
                     ],
                   ),
                   childCount: 1,

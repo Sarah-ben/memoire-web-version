@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:memoire/modules/teachers_screen/teachers_screen.dart';
+import 'package:memoire/modules/welcome_screen/welcome_screen.dart';
 import 'package:memoire/widgets/login/cubit/states.dart';
 
 import '../../../models/login_model/login_model.dart';
@@ -158,4 +159,19 @@ class LoginCubit extends Cubit<LoginStates>{
     });
   }
 
+  void deleteAccount(id,context){
+    DioHelper.deleteData(url: 'http://127.0.0.1:8000/api/delete/$id').then((value) {
+      getUsers();
+      print(value.data);
+      emit(DeleteUserSuccessState());
+      flutterToast(msg: 'Account Deleted!', state: toastStates.error).then((value) {
+        CacheHelper.clearData();
+        navigateAndReplace(context, WelcomePage());} );
+    }).catchError((onError){
+      flutterToast(msg: 'something went wrong!', state: toastStates.error);
+
+      emit(DeleteUserErrorState());
+
+    });
+  }
 }

@@ -15,6 +15,7 @@ import 'package:memoire/shared/network/cache_helper.dart';
 import 'package:memoire/widgets/add_clasrrom/cubit/add_cubit.dart';
 import 'package:memoire/widgets/add_clasrrom/cubit/add_states.dart';
 import 'package:memoire/widgets/register/register_widget.dart';
+import '../../shared/components/footer/footer_min.dart';
 import '../../shared/components/footer/footer_mx.dart';
 import '../../shared/cubit/app_cubit.dart';
 import '../../shared/styles/icons.dart';
@@ -39,6 +40,7 @@ class _ClassroomScreenState extends State<ClassroomScreen> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    print(getWidth(context));
     return BlocConsumer<AddCubit,AddStates>(builder: (BuildContext context, state) {
       return Scaffold(
           backgroundColor: dark(context) ? Colors.black : Colors.white,
@@ -84,7 +86,7 @@ class _ClassroomScreenState extends State<ClassroomScreen> {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            getWidth(context) >= 900
+                            getWidth(context) >= 1214
                                 ? leftMenu(context)
                                 : const SizedBox(),
                             Expanded(
@@ -101,7 +103,7 @@ class _ClassroomScreenState extends State<ClassroomScreen> {
                                   children: [
                                     customText(context, text: 'Classrooms and amphitheatre',upperCase: false),
                                     verticalSizedBox(20.0),
-                                   isAdmin? DataTable2(
+                                    AddCubit.get(context).classrooms.length>0?  isAdmin? DataTable2(
                                         border:TableBorder.all(color: Colors.grey.withOpacity(.4)) ,
                                         headingRowColor:MaterialStateProperty.all(Colors.grey.withOpacity(.5)) ,
                                         //dataRowColor:MaterialStateProperty.all(Colors.green) ,
@@ -152,7 +154,7 @@ class _ClassroomScreenState extends State<ClassroomScreen> {
                                           DataCell(customText(context, text: data.type!,fontSize: 12.0,upperCase: false)),
                                           DataCell(customText(context, text: '${data.particulier!}',fontSize: 12.0,upperCase: false)),
                                           DataCell(
-                                              Row(
+                                              getWidth(context)>=730?  Row(
                                                 children: [
                                                    const Icon(IconBroken.Edit,color: Colors.yellow,size: 15,),
                                                   InkWell(
@@ -166,10 +168,19 @@ class _ClassroomScreenState extends State<ClassroomScreen> {
                                                     child: customText(context, text: 'Edit',color:isAdmin? Colors.blueGrey:Colors.grey,upperCase: false),
                                                   )
                                                 ],
+                                              ):InkWell(
+                                                onTap:(){
+                                                  TextEditingController _classStage=TextEditingController(text: '${data.etage}');
+                                                  TextEditingController _classCapacity=TextEditingController(text: '${data.capcity}');
+                                                  updateClassDialog(context,id:data.id,name:data.name,classStage: _classStage,classCapacity: _classCapacity);
+                                                  //print('tapped');
+                                                  //MaterialCubit.get(context).deleteMaterial(data.id, context);
+                                                },
+                                                child: customText(context, text: 'Edit',color:isAdmin? Colors.blueGrey:Colors.grey,upperCase: false),
                                               )
                                           ),
                                           DataCell(
-                                              Row(
+                                              getWidth(context)>=730? Row(
                                                 children: [
                                                   const Icon(IconBroken.Delete,color: Colors.red,size: 15),
                                                   InkWell(
@@ -182,7 +193,15 @@ class _ClassroomScreenState extends State<ClassroomScreen> {
                                                     child: customText(context, text: 'Delete',color: isAdmin? Colors.blueGrey:Colors.grey,upperCase: false),
                                                   ),
                                                 ],
-                                              )),
+                                              ):  InkWell(
+                                                onTap:(){
+                                                  deleteConfirmation(context, text1: data.name!,function: (){
+                                                    AddCubit.get(context).deleteSalle(
+                                                        data.id, context);
+                                                  });
+                                                },
+                                                child: customText(context, text: 'Delete',color: isAdmin? Colors.blueGrey:Colors.grey,upperCase: false),
+                                              ),),
                                           DataCell(
                                             InkWell(
                                               onTap:(){
@@ -381,7 +400,10 @@ class _ClassroomScreenState extends State<ClassroomScreen> {
                                            ),
                                          ),
                                          //  DataCell(Text(''))
-                                       ])).toList()),
+                                       ])).toList()) :
+                                       Padding(padding: EdgeInsets.all(300),
+                                         child: customText(context, text: 'no classrooms yet',color: Colors.grey),
+                                       )
                                   ],
                                 ),
                               ),
@@ -395,7 +417,7 @@ class _ClassroomScreenState extends State<ClassroomScreen> {
                       const SizedBox(
                         height: 70,
                       ),
-                      const footer()
+                      getWidth(context)>=950 ?footer():FooterMin()
                     ],
                   ),
                   childCount: 1,

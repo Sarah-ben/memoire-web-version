@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:memoire/modules/classroom_amphi_screen/classroom_amphi_screen.dart';
+import 'package:memoire/modules/reservations/classroom_reservation_screen.dart';
 import 'package:memoire/widgets/add_clasrrom/cubit/add_cubit.dart';
 import 'package:memoire/widgets/add_reservation/classroom_cubit/reservation_list.dart';
 import '../../../models/reservation_model/classroom_reservation,_model.dart';
@@ -186,7 +187,12 @@ late ReservationData reservationData;
       'id_classroom':'${reservationData.id_classroom}',
       'id_user':'${CacheHelper.getData(key: 'ID')}',
     }).then((value) {
-      flutterToast(msg: 'reservation updated Successfully', state: toastStates.success).then((value) =>navigateTo(context, ClassroomScreen()));
+      flutterToast(msg: 'reservation updated Successfully', state: toastStates.success).then((value) {
+        navigateTo(context, ClassroomReservationScreen());
+        getReservation(context);
+        getAllReservation(context);
+        getParticularClassroom();
+      });
       print(value.data);
       print('all updated !');
       // print(value.data);
@@ -220,10 +226,11 @@ late ReservationData reservationData;
     }).then((value) {
       print(value.data);
       print('all updated !');
-      flutterToast(msg: 'reservation added!', state: toastStates.success).then((value) {
+      flutterToast(msg: 'reservation updated!', state: toastStates.success).then((value) {
        // Navigator.of(context).pop(HomeScreen());
        // navigateTo(context, HomeScreen());
         //Navigator.pop(context);
+        navigateTo(context, ClassroomReservationScreen());
         getParticularClassroom();
         getAllReservation(context);
         getReservation(context);

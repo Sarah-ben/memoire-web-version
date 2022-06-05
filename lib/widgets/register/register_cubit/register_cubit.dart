@@ -49,6 +49,7 @@ class RegisterCubits extends Cubit<RegisterState>{
       loginModel=LoginModel.fromJson(value.data);
       print('this is the token ${loginModel.token}');
       print('the name ${loginModel.userData!.first_name}');
+      print('the name ${loginModel.userData!.password}');
       print(loginModel.userData!.id);
       CacheHelper.saveData(key: 'ID', val:loginModel.userData!.id );
       // print('$email');

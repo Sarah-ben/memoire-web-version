@@ -56,7 +56,7 @@ class AddCubit extends Cubit<AddStates>{
     salleName=[];
     // print(classModel!.data!.name);
     emit(getDataState());
-    DioHelper.getData(url: 'http://127.0.0.1:8000/api/getBySearch/30/May 22, 2022/11:41 AM').then((value) {
+    DioHelper.getData(url: 'http://127.0.0.1:8000/api/salle').then((value) {
       //print('hello world');
       // classModel=ClassModel.fromJson(value.data);
       value.data.forEach((e){
@@ -131,26 +131,6 @@ class AddCubit extends Cubit<AddStates>{
     });
   }
 
-  /* void updateS(){
-    emit(UpdateDataState());
-    DioHelper.updateData(url: 'http://10.0.2.2:8000/api/reservation/4', data: {
-      'time':'etage',
-      'date':'capcity',
-      'goal':'capcity',
-      'id_classroom':'2',
-      'id_user':'1',
-
-    }).then((value) {
-      print('all updated !');
-      // print(value.data);
-      //salles=value.data;
-      // print(salles);
-      emit(UpdateSuccessState());
-    }).catchError((onError){
-      print(onError.toString());
-      emit(UpdateErrorState());
-    });
-  }*/
 // delete classroom
   void deleteSalle(id,context){
     DioHelper.deleteData(url:'http://127.0.0.1:8000/api/salle/$id' ).then((value){
@@ -167,52 +147,22 @@ class AddCubit extends Cubit<AddStates>{
     });
   }
 
-/*List reservations=[];
-  void getReservation(context){
-    //salles=[];
-    // print(classModel!.data!.name);
-    emit(getDataState());
-    DioHelper.getData(url: 'http://10.0.2.2:8000/api/findlist/${LoginCubit.get(context).loginModel.userData!.id}').then((value) {
-      //print('hello world');
-      // classModel=ClassModel.fromJson(value.data);
-     print(value.data);
-     reservations=value.data;
+  List search=[];
 
-      // this one worked fine
-      /*salles=value.data;
-      print(salles);
-      print(value.data[0]);
-       data=Data.fromJson(value.data[0]);
-      print(data.name);*/
-
-
-      // print(classModel);
-      //salles.add(value.data);
-      //print(value.data);
-      //  salles=value.data;
-      // print(salles.length);
-      //print(s);
-      /* s.forEach((element) {
-      // print(element['id']);
-      classModel=ClassModel.fromJson(element['id']);
-      print(ClassModel.fromJson(element['id']));
-     });*/
-      //print(salles.length);
-      //
-      //print(salles[0][1]['name']);
-      //print(salles[0][0]['name']);
-      // salles.forEach((element) {
-      // s=element.data();
-      //  print(element);
-      // classModel=ClassModel.fromJson(element);
-      // s.add(element.data());
-      // print('the sec list is $s');
-      // });
-      emit(GetSuccessState());
+  searchData(value){
+    search=[];
+    emit(SearchLoadingState());
+    DioHelper.postData(url: 'http://127.0.0.1:8000/api/searchData', data: {
+      'data':'$value',
+    }).
+    then((v) {
+      print('data i want ${v.toString()}');
+      print('data i want dataa ${v}');
+      search=v.data;
+      print('data lenght is ${search.length}');
+      emit(SearchState());
     }).catchError((onError){
-      print(onError);
-      emit(GetErrorState());
+      emit(SearchErrorState());
     });
-  }*/
-
+  }
 }

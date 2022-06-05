@@ -80,18 +80,7 @@ class AdminAccountRequest extends StatelessWidget {
                       const SizedBox(
                         height: 30,
                       ),
-                      customText(context,
-                          text: '    Infos', color: Colors.green, fontSize: 10),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      SizedBox(
-                          width: 400,
-                          child: customTextField(context,
-                              controller: TextEditingController(),
-                              label: '',
-                              textInputType: TextInputType.text,
-                              maxLines: 10,textColor: Colors.black)),
+
                       const SizedBox(
                         height: 40,
                       ),
@@ -102,7 +91,9 @@ class AdminAccountRequest extends StatelessWidget {
                           ),
                           SizedBox(
                               width: 200,
-                              child: defaultButton(function: () {}, text: 'Submit',radius: 20)),
+                              child: defaultButton(function: () {
+                                sendEmail('sara.bensalem@univ-constantine2.dz', 'ADMIN REQUEST');
+                              }, text: 'Send Email',radius: 20)),
                         ],
                       )
                     ],

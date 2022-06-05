@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:memoire/modules/classroom_amphi_screen/classroom_amphi_screen.dart';
 import 'package:memoire/modules/welcome_screen/welcome_screen.dart';
+import 'package:memoire/shared/components/constants.dart';
 import 'package:memoire/shared/cubit/app_cubit.dart';
 import 'package:memoire/shared/cubit/app_states.dart';
 import 'package:memoire/shared/network/cache_helper.dart';
@@ -16,7 +17,6 @@ import 'package:memoire/widgets/login/cubit/cubit.dart';
 import 'package:memoire/widgets/login/cubit/states.dart';
 import 'package:memoire/widgets/register/register_cubit/register_cubit.dart';
 import 'modules/home_screen/home_screen.dart';
-import 'modules/home_screen/home_screen_minsize.dart';
 import 'modules/reservations/notifications.dart';
 import 'modules/welcome_screen/welcome_screen_minwidth.dart';
 
@@ -29,7 +29,6 @@ void main()async {
   await CacheHelper.init();
 
   DioHelper.init();
-  var isOnBoarding=CacheHelper.getData(key: 'onBoarding');
   Widget widget;
   var token=CacheHelper.getData(key: 'token');
 

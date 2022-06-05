@@ -38,6 +38,9 @@ class _FooterMinState extends State<FooterMin> {
               const Divider(thickness: 2,color: Colors.white,),
               verticalSizedBox(10.0),
               customTextButton(
+                  onPressed: (){
+                    sendEmail('djihane.laadjal@univ-constantine2.dz', 'Contact Developer');
+                  },
                   onHover: (hover) {
                     setState(() {
                       isContactus = hover;
@@ -45,13 +48,11 @@ class _FooterMinState extends State<FooterMin> {
                   },
                   text: 'Contact Us',
                   isHover: isContactus),
+
               customTextButton(
-                  onHover: (hover) {
-                    setState(() => isAccessible = hover);
+                  onPressed: (){
+                    launchUrl('https://www.freeprivacypolicy.com/live/ff2de365-f95c-4f05-8dc4-b7e18f2b6c71');
                   },
-                  text: 'Accessibility',
-                  isHover: isAccessible),
-              customTextButton(
                   onHover: (hover) {
                     setState(() => isPrivacy = hover);
                   },
@@ -74,6 +75,9 @@ class _FooterMinState extends State<FooterMin> {
               const Divider(thickness: 2,color: Colors.white,),
               verticalSizedBox(10.0),
               customTextButton(
+                  onPressed: (){
+                    launchUrl('https://web.facebook.com/faculteNTICUC2');
+                  },
                   onHover: (Hover) {
                     setState(() {
                       isFacebook = Hover;
@@ -82,6 +86,9 @@ class _FooterMinState extends State<FooterMin> {
                   text: 'Facebook',
                   isHover: isFacebook),
               customTextButton(
+                  onPressed: (){
+                    launchUrl('https://twitter.com/fac_ntic_UC2');
+                  },
                   onHover: (Hover) {
                     setState(() {
                       isTwitter = Hover;
@@ -89,30 +96,27 @@ class _FooterMinState extends State<FooterMin> {
                   },
                   text: 'Twitter',
                   isHover: isTwitter),
-              customTextButton(
-                  onHover: (Hover) {
-                    setState(() {
-                      isInstagram = Hover;
-                    });
-                  },
-                  text: 'Instagram',
-                  isHover: isInstagram),
-              customTextButton(
-                  onHover: (Hover) {
-                    setState(() {
-                      isYoutube = Hover;
-                    });
-                  },
-                  text: 'Youtube',
-                  isHover: isYoutube),
+
+
               customTextButton(
                   onHover: (Hover) {
                     setState(() {
                       isLnkedIn = Hover;
                     });
                   },
-                  text: 'LinkedIn',
+                  text: '031783173',
                   isHover: isLnkedIn),
+              customTextButton(
+                  onPressed: (){
+                    sendEmail('fac.ntic@univ-constantine2.dz', '');
+                  },
+                  onHover: (Hover) {
+                    setState(() {
+                      isEmail = Hover;
+                    });
+                  },
+                  text: 'Email',
+                  isHover: isEmail),
             ],
           ),
            Spacer(),

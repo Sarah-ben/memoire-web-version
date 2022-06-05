@@ -12,6 +12,7 @@ import 'package:memoire/shared/components/constants.dart';
 import 'package:memoire/shared/network/cache_helper.dart';
 import 'package:memoire/widgets/add_reservation/classroom_cubit/reservation_list.dart';
 import 'package:memoire/widgets/register/register_widget.dart';
+import '../../shared/components/footer/footer_min.dart';
 import '../../shared/components/footer/footer_mx.dart';
 import '../../shared/cubit/app_cubit.dart';
 import '../../shared/styles/icons.dart';
@@ -82,7 +83,7 @@ class _ClassroomReservationScreenState extends State<ClassroomReservationScreen>
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            getWidth(context) >= 900
+                            getWidth(context) >= 1208
                                 ? leftMenu(context)
                                 : const SizedBox(),
                             Expanded(
@@ -103,7 +104,7 @@ class _ClassroomReservationScreenState extends State<ClassroomReservationScreen>
                                     children: [
                                       customText(context, text: 'Classrooms reservations',upperCase: false),
                                       verticalSizedBox(20.0),
-                                      CacheHelper.getData(key: 'role')=='admin'?
+                                    ReservationCubit.get(context).reservations.length >0?   CacheHelper.getData(key: 'role')=='admin'?
                                       DataTable2(
                                           decoration: BoxDecoration(
                                               color: Colors.green.withOpacity(.05),
@@ -200,7 +201,8 @@ class _ClassroomReservationScreenState extends State<ClassroomReservationScreen>
                                                 text: data.etat!,
                                                 fontSize: 12.0,
                                                 upperCase: false)),
-                                            DataCell(Row(
+                                            DataCell(
+                                               getWidth(context)>=650? Row(
                                               children: [
                                                 const Icon(
                                                   IconBroken.Edit,
@@ -222,8 +224,23 @@ class _ClassroomReservationScreenState extends State<ClassroomReservationScreen>
                                                       upperCase: false),
                                                 )
                                               ],
-                                            )),
-                                            DataCell(Row(
+                                            ):  InkWell(
+                                                 onTap: () {
+                                                   var reservationTime=TextEditingController(text: data.time);
+                                                   var reservationDate=TextEditingController(text: data.date);
+                                                   var reservationGoal=TextEditingController(text: data.goal);
+                                                   updateReservation(context, data.id,data.id_user,reservationTime,reservationDate,reservationGoal,data.etat);
+                                                   //print('tapped');
+                                                   //MaterialCubit.get(context).deleteMaterial(data.id, context);
+                                                 },
+                                                 child: customText(context,
+                                                     text: 'Edit',
+                                                     color: Colors.blueGrey,
+                                                     upperCase: false),
+                                               )),
+                                            DataCell(
+                                                getWidth(context)>=650?
+                                                Row(
                                               children: [
                                                 const Icon(IconBroken.Delete,
                                                     color: Colors.red,
@@ -245,7 +262,22 @@ class _ClassroomReservationScreenState extends State<ClassroomReservationScreen>
                                                       upperCase: false),
                                                 ),
                                               ],
-                                            )),
+                                            ): InkWell(
+                                                  onTap: () {
+                                                    print('reservation etat  ${data.etat}');
+                                                    deleteConfirmation(context,
+                                                        text1: 'ID : ${data.id!} ',
+                                                        function: () {
+                                                          ReservationCubit.get(context)
+                                                              .deleteReservation(
+                                                              data.id, context);
+                                                        });
+                                                  },
+                                                  child: customText(context,
+                                                      text: 'Delete',
+                                                      color: Colors.blueGrey,
+                                                      upperCase: false),
+                                                ),),
                                             //  DataCell(Text(''))
                                           ]))
                                               .toList())
@@ -339,7 +371,8 @@ class _ClassroomReservationScreenState extends State<ClassroomReservationScreen>
                                                 text: data.etat!,
                                                 fontSize: 12.0,
                                                 upperCase: false)),
-                                            DataCell(Row(
+                                            DataCell(
+                                               getWidth(context)>=650? Row(
                                               children: [
                                                 const Icon(
                                                   IconBroken.Edit,
@@ -361,8 +394,22 @@ class _ClassroomReservationScreenState extends State<ClassroomReservationScreen>
                                                       upperCase: false),
                                                 )
                                               ],
-                                            )),
-                                            DataCell(Row(
+                                            ): InkWell(
+                                                 onTap: () {
+                                                   var reservationTime=TextEditingController(text: data.time);
+                                                   var reservationDate=TextEditingController(text: data.date);
+                                                   var reservationGoal=TextEditingController(text: data.goal);
+                                                   updateReservation(context, data.id,data.id_user,reservationTime,reservationDate,reservationGoal,data.etat);
+                                                   //print('tapped');
+                                                   //MaterialCubit.get(context).deleteMaterial(data.id, context);
+                                                 },
+                                                 child: customText(context,
+                                                     text: 'Edit',
+                                                     color: Colors.blueGrey,
+                                                     upperCase: false),
+                                               )),
+                                            DataCell(
+                                               getWidth(context)>=650? Row(
                                               children: [
                                                 const Icon(IconBroken.Delete,
                                                     color: Colors.red,
@@ -383,10 +430,27 @@ class _ClassroomReservationScreenState extends State<ClassroomReservationScreen>
                                                       upperCase: false),
                                                 ),
                                               ],
-                                            )),
+                                            ):InkWell(
+                                                 onTap: () {
+                                                   deleteConfirmation(context,
+                                                       text1: 'ID : ${data.id!} ',
+                                                       function: () {
+                                                         ReservationCubit.get(context)
+                                                             .deleteReservation(
+                                                             data.id, context);
+                                                       });
+                                                 },
+                                                 child: customText(context,
+                                                     text: 'Delete',
+                                                     color: Colors.blueGrey,
+                                                     upperCase: false),
+                                               ),),
                                             //  DataCell(Text(''))
                                           ]))
-                                              .toList()),
+                                              .toList()) :
+                                    Padding(padding: EdgeInsets.all(300),
+                                child: customText(context, text: 'no reservation yet',color: Colors.grey),
+                              ),
                                     ],
                                   ),
                                 ),
@@ -401,7 +465,7 @@ class _ClassroomReservationScreenState extends State<ClassroomReservationScreen>
                       const SizedBox(
                         height: 70,
                       ),
-                      const footer()
+                      getWidth(context)>=950 ?footer():FooterMin()
                     ],
                   ),
                   childCount: 1,
